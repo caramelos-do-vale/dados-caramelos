@@ -1,4 +1,4 @@
-import { Dog, LogOut, Store, LayoutDashboard, Bell, Calendar1 } from 'lucide-react';
+import { Dog, LogOut, Store, LayoutDashboard, Bell, Calendar1, UsersRound } from 'lucide-react';
 
 export const navItems = [
     {
@@ -20,6 +20,11 @@ export const navItems = [
         label: 'Eventos',
         key: '/events',
         icon: <Calendar1 size={18} />,
+    },
+    {
+        label: 'Usuários',
+        key: '/users',
+        icon: <UsersRound size={18} />,
     },
 ];
 
