@@ -1,25 +1,17 @@
 'use client';
 import { useState } from 'react';
 import { useDataList } from '@/hooks/useDataList';
-
-import { Table, Empty, Input, Button, Modal } from 'antd';
-import { ProductForm } from '@/screens/products/ProductModal';
-import { deleteProduct } from '@/services/productsService';
-import { toggleProductAvailability as toggleService } from '@/services/productsService';
-import { ProductsMobileList } from '@/screens/products/ProductsMobileList';
-import { useProductsFilters } from '@/hooks/useProductsFilters';
-import { useProductsColumns } from '@/hooks/useProductsColumns';
-import { IProduct } from '@/types/Product';
-import { UserPlus } from 'lucide-react';
-import { IUser } from '@/types/User';
 import { useUsersColumns } from '@/hooks/useUsersColumns';
 import { useUsersFilters } from '@/hooks/useUsersFilters';
+import { Table, Empty, Input, Button, Modal } from 'antd';
+import { UserPlus } from 'lucide-react';
+import { IUser } from '@/types/User';
+import { InviteModal } from './InviteModal';
 
 const { Search } = Input;
 
 export function UsersPage() {
     const users = useDataList<IUser>({ table: 'users' });
-    console.log(users);
 
     const [search, setSearch] = useState('');
     const [tableFilters, setTableFilters] = useState({});
@@ -33,15 +25,9 @@ export function UsersPage() {
         setIsModalOpen(true);
     }
 
-    // function handleOpenEditModal(product: IProduct) {
-    //     setSelectedProduct(product);
-    //     setIsModalOpen(true);
-    // }
-
-    // function handleCloseModal() {
-    //     setIsModalOpen(false);
-    //     setSelectedProduct(null);
-    // }
+    function handleCloseInviteModal() {
+        setIsModalOpen(false);
+    }
 
     // function handleOpenDeleteModal(product: IProduct) {
     //     Modal.confirm({
@@ -74,6 +60,11 @@ export function UsersPage() {
 
     return (
         <>
+            <InviteModal
+                open={isModalOpen}
+                onClose={handleCloseInviteModal}
+                onSuccess={users.refresh}
+            />
             <h1 className="text-xl md:text-2xl font-semibold">Usuários</h1>
             <div className="w-full flex gap-4 md:gap-8">
                 <Search
