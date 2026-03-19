@@ -3,14 +3,15 @@ import { useState } from 'react';
 import { useDataList } from '@/hooks/useDataList';
 import { useUsersColumns } from '@/hooks/useUsersColumns';
 import { useUsersFilters } from '@/hooks/useUsersFilters';
-import { Table, Empty, Input, Button, Modal } from 'antd';
 import { UserPlus } from 'lucide-react';
+import { Table, Empty, Input, Button } from 'antd';
 import { IUser } from '@/types/User';
-import { InviteModal } from './InviteModal';
+import { InviteModal } from '@/screens/users/InviteModal';
 
 const { Search } = Input;
 
 export function UsersPage() {
+
     const users = useDataList<IUser>({ table: 'users' });
 
     const [search, setSearch] = useState('');
@@ -28,35 +29,6 @@ export function UsersPage() {
     function handleCloseInviteModal() {
         setIsModalOpen(false);
     }
-
-    // function handleOpenDeleteModal(product: IProduct) {
-    //     Modal.confirm({
-    //         title: 'Confirmar exclusão',
-    //         content: (
-    //             <>
-    //                 Você realmente deseja excluir o produto <strong>{product.name}</strong>? Essa
-    //                 ação não poderá ser desfeita.
-    //             </>
-    //         ),
-    //         okText: 'Excluir',
-    //         okType: 'danger',
-    //         cancelText: 'Cancelar',
-    //         centered: true,
-    //         async onOk() {
-    //             const result = await deleteProduct(product);
-    //             if (!result) return;
-
-    //             products.refresh();
-    //         },
-    //     });
-    // }
-
-    // async function toggleProductAvailability(product: IProduct) {
-    //     const result = await toggleService(product);
-    //     if (result) {
-    //         products.refresh();
-    //     }
-    // }
 
     return (
         <>
@@ -97,13 +69,6 @@ export function UsersPage() {
                 }}
                 className="w-full hidden md:table"
             />
-            {/* <ProductsMobileList
-                products={filteredProducts}
-                typeColors={typeColors}
-                handleOpenEditModal={handleOpenEditModal}
-                handleOpenDeleteModal={handleOpenDeleteModal}
-                toggleProductAvailability={toggleProductAvailability}
-            /> */}
         </>
     );
 }

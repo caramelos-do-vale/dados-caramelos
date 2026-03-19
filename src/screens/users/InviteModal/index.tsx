@@ -10,13 +10,14 @@ interface InviteModalProps {
 }
 
 export function InviteModal({ open, onClose, onSuccess }: InviteModalProps) {
+
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
 
     return (
         <Modal
             open={open}
-            title="Convidar Novo Usuário"
+            title="Convidar novo usuário"
             onCancel={onClose}
             width={600}
             destroyOnHidden
@@ -31,6 +32,7 @@ export function InviteModal({ open, onClose, onSuccess }: InviteModalProps) {
                     onClick={() => {}}
                     icon={<SendHorizonal size={16} />}
                     iconPlacement="end"
+                    disabled
                 >
                     Convidar
                 </Button>,
