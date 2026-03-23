@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { inviteUser } from '@/supabase/auth';
 import { Modal, Button, Input } from 'antd';
 import { SendHorizonal } from 'lucide-react';
 
@@ -10,9 +11,21 @@ interface InviteModalProps {
 }
 
 export function InviteModal({ open, onClose, onSuccess }: InviteModalProps) {
-
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
+
+    async function handleInviteUser() {
+        try {
+            setLoading(true);
+            await inviteUser(email);
+            await onSuccess();
+            onClose();
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <Modal
@@ -29,10 +42,9 @@ export function InviteModal({ open, onClose, onSuccess }: InviteModalProps) {
                     key="save"
                     type="primary"
                     loading={loading}
-                    onClick={() => {}}
+                    onClick={handleInviteUser}
                     icon={<SendHorizonal size={16} />}
                     iconPlacement="end"
-                    disabled
                 >
                     Convidar
                 </Button>,

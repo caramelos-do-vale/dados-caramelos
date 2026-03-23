@@ -11,7 +11,6 @@ import { InviteModal } from '@/screens/users/InviteModal';
 const { Search } = Input;
 
 export function UsersPage() {
-
     const users = useDataList<IUser>({ table: 'users' });
 
     const [search, setSearch] = useState('');

@@ -2,6 +2,7 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/supabase/server';
+import { createAdminClient } from '@/supabase/admin';
 import { SignInWithPasswordCredentials } from '@supabase/supabase-js';
 
 export async function login(user: SignInWithPasswordCredentials) {
@@ -34,4 +35,19 @@ export async function logout() {
 
     revalidatePath('/login', 'layout');
     redirect('/login');
+}
+
+export async function inviteUser(email: string) {
+    const supabase = createAdminClient();
+
+    const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
+        redirectTo: '',
+    });
+
+    if (error) {
+        console.error('Erro ao enviar convite:', error);
+        throw error;
+    }
+
+    return data;
 }
