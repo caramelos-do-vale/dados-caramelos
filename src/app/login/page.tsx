@@ -1,8 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login } from '@/supabase/auth';
 import { Alert, Button, Input } from 'antd';
+import { supabase } from '@/supabase/client';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -14,6 +15,23 @@ export default function LoginPage() {
     });
 
     const disabled = !auth.email || !auth.password;
+
+    useEffect(() => {
+        const hash = window.location.hash;
+        if (!hash.includes('type=invite')) return;
+
+        const params = new URLSearchParams(hash.substring(1));
+        const access_token = params.get('access_token');
+        const refresh_token = params.get('refresh_token');
+
+        if (!access_token || !refresh_token) return;
+
+        supabase.auth.setSession({ access_token, refresh_token }).then(({ error }) => {
+            if (!error) {
+                router.push('/set-password');
+            }
+        });
+    }, []);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();

@@ -37,16 +37,31 @@ export async function logout() {
     redirect('/login');
 }
 
-export async function inviteUser(email: string) {
+export async function inviteUser(email: string, role: string, name: string) {
     const supabase = createAdminClient();
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
     const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
-        redirectTo: '',
+        redirectTo: `${siteUrl}/auth/callback?next=/set-password`,
     });
 
     if (error) {
         console.error('Erro ao enviar convite:', error);
         throw error;
+    }
+
+    const { error: insertError } = await supabase.from('users').insert({
+        id: data.user.id,
+        email,
+        name,
+        role,
+        active: false,
+    });
+
+    if (insertError) {
+        console.error('Erro ao criar registro do usuário:', insertError);
+        throw insertError;
     }
 
     return data;
